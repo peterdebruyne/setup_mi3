@@ -51,6 +51,32 @@
       ansible.builtin.systemd:
         name: ufw
         state: started
+
+# fix manjaro ntp    
+    - name: Stop ntpd.service
+      become: yes
+      ansible.builtin.systemd:
+        name: ntpd.service
+        state: started
+    - name: Disable ntpd.service
+      become: yes
+      ansible.builtin.systemd:
+        name: ntpd.service
+        enabled: no
+        masked: no 
+    - name: Enable systemd-timesyncd.service
+      become: yes
+      ansible.builtin.systemd:
+        name: systemd-timesyncd.service
+        enabled: yes
+        masked: no 
+    - name: Start systemd-timesyncd.service
+      become: yes
+      ansible.builtin.systemd:
+        name: systemd-timesyncd.service
+        state: started
+    
+    
     - name: Install Open VM Tools
       become: yes
       pacman: state=present name="open-vm-tools"
