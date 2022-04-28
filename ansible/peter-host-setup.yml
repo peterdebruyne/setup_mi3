@@ -1,0 +1,107 @@
+---
+  - name: "Setup new host PDE"
+    hosts: localhost
+    connection: local 
+    roles:
+    - role: gantsign.antigen
+    #https://galaxy.ansible.com/gantsign/antigen
+      users:
+        - username: labadmin
+          antigen_libraries:
+            - name: oh-my-zsh
+          antigen_theme:
+            name: robbyrussell
+          antigen_bundles:
+            # Bundles from the default repo (robbyrussell's oh-my-zsh).
+            - name: git
+            - name: heroku
+            - name: pip
+            - name: lein
+            - name: command-not-found
+            # Syntax highlighting bundle.
+            - name: zsh-syntax-highlighting # `name` is required (any valid file name will do so long as it's unique for the bundles)
+              url: zsh-users/zsh-syntax-highlighting
+            - name: zsh-autosuggestions
+              url: zsh-users/zsh-autosuggestions
+ #      antigen_install_oh_my_zsh: yes
+    - role: tvieira.powerline-fonts
+      all_users:              # this role can configure for one or more users
+        - user: labadmin
+          homedir: /home/labadmin
+      all_fonts:              # the fonts you want to install
+      - RobotoMono          # the name of these fonts must match the name of the
+      - SourceCodePro       # font directory
+      - DejaVuSansMono
+      - UbuntuMono
+  
+    tasks:
+    - name: Run the equivalent of "pacman -Syu" as a separate step
+      become: yes
+      pacman:
+        update_cache: yes
+        upgrade: yes
+    - name: Enable firewall service
+      become: yes
+      ansible.builtin.systemd:
+        name: ufw
+        enabled: yes
+        masked: no 
+    - name: Start firewall service
+      become: yes
+      ansible.builtin.systemd:
+        name: ufw
+        state: started
+    - name: Install Open VM Tools
+      become: yes
+      pacman: state=present name="open-vm-tools"
+    - name: VM Block Service Enable 
+      become: yes
+      ansible.builtin.systemd:
+        name: vmware-vmblock-fuse.service
+        enabled: yes
+        masked: no 
+    - name: VM Block Service Start
+      become: yes
+      ansible.builtin.systemd:
+        name: vmware-vmblock-fuse.service
+        state: started
+     
+    - name: "touchpad natural"
+      become: yes
+      lineinfile: 
+        path: /etc/X11/xorg.conf.d/30-touchpad.conf
+        line: "    Option \"NaturalScrolling\" \"true\""
+        backup: yes
+        insertafter: 'MatchIsTouchpad "on"'
+    - name: "touchpad horizontal"
+      become: yes
+      lineinfile: 
+        path: /etc/X11/xorg.conf.d/30-touchpad.conf
+        line: "    Option \"HorizontalScrolling\" \"true\""
+        backup: yes
+        insertafter: 'MatchIsTouchpad "on"'
+          
+
+    - name: Install xdotool, zsh, jq
+      # required for some copy paste ops
+      become: yes
+      pacman: 
+        state: present
+        name:
+          - xdotool
+          - zsh
+          - jq
+    - name: "pam gnome key ring1"
+      become: yes
+      lineinfile: path=/etc/pam.d/login line="auth       optional     pam_gnome_keyring.so" backup=yes create=yes
+    - name: "pam gnome key ring2"
+      become: yes
+      lineinfile: path=/etc/pam.d/login line="session    optional     pam_gnome_keyring.so auto_start" backup=yes create=yes
+    - name: "xprofile - xset -b - disable beep in terminal"
+      lineinfile: path=~/.xprofile line="xset -b" create=yes
+    - name: "Install py3status bar for i3"
+      become: yes
+      pacman: state=present name="py3status"
+# to check: dpi scaling?      
+
+        
