@@ -1,0 +1,5 @@
+[user]
+	email = peter.debruyne@belpro.be
+	name = Peter Debruyne
+[credential]
+	helper = /usr/lib/git-core/git-credential-libsecret
