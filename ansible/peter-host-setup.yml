@@ -82,7 +82,7 @@
         insertafter: 'MatchIsTouchpad "on"'
           
 
-    - name: Install xdotool, zsh, jq
+    - name: Install xdotool, zsh, jq, geany
       # required for some copy paste ops
       become: yes
       pacman: 
@@ -91,6 +91,7 @@
           - xdotool
           - zsh
           - jq
+          - geany
     - name: "pam gnome key ring1"
       become: yes
       lineinfile: path=/etc/pam.d/login line="auth       optional     pam_gnome_keyring.so" backup=yes create=yes
