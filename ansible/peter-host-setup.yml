@@ -24,15 +24,15 @@
             - name: zsh-autosuggestions
               url: zsh-users/zsh-autosuggestions
  #      antigen_install_oh_my_zsh: yes
-    - role: tvieira.powerline-fonts
-      all_users:              # this role can configure for one or more users
-        - user: labadmin
-          homedir: /home/labadmin
-      all_fonts:              # the fonts you want to install
-      - RobotoMono          # the name of these fonts must match the name of the
-      - SourceCodePro       # font directory
-      - DejaVuSansMono
-      - UbuntuMono
+#    - role: tvieira.powerline-fonts
+#      all_users:              # this role can configure for one or more users
+#        - user: labadmin
+#          homedir: /home/labadmin
+#      all_fonts:              # the fonts you want to install
+#      - RobotoMono          # the name of these fonts must match the name of the
+#      - SourceCodePro       # font directory
+#      - DejaVuSansMono
+#      - UbuntuMono
   
     tasks:
     - name: Run the equivalent of "pacman -Syu" as a separate step
