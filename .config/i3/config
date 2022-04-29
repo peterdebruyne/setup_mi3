@@ -207,7 +207,7 @@ bindsym $mod+ctrl+w exec i3-input -F 'rename workspace to "%s"' -P 'New name for
 
 # switch last windows
 exec --no-startup-id ~/.config/i3-last-window/i3-last-window.sh
-bindsym $mod+comma [con_mark=_prevFocus0] focus
+bindsym $mod+semicolon [con_mark=_prevFocus0] focus
 #bindsym $mod+ctrl+comma [con_mark=_prevFocus2] focus
 
 # Open applications on specific workspaces
@@ -283,6 +283,11 @@ bindsym $mod+$mod_next+Ctrl+n resize shrink width 1 px or 1 ppt
 bindsym $mod+$mod_next+Ctrl+e resize grow height 1 px or 1 ppt
 bindsym $mod+$mod_next+Ctrl+u resize shrink height 1 px or 1 ppt
 bindsym $mod+$mod_next+Ctrl+i resize grow width 1 px or 1 ppt
+
+# predefined sizes (70/30)
+bindsym $mod+$mod_next+m resize set width 40 ppt
+bindsym $mod+$mod_next+comma resize set width 50 ppt
+bindsym $mod+$mod_next+period resize set width 60 ppt
 
 # Resize window (you can also use the mouse for that)
 bindsym $mod+r mode "resize"
