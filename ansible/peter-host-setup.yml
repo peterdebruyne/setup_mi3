@@ -126,6 +126,15 @@
       lineinfile: path=/etc/pam.d/login line="session    optional     pam_gnome_keyring.so auto_start" backup=yes create=yes
     - name: "xprofile - xset -b - disable beep in terminal"
       lineinfile: path=~/.xprofile line="xset -b" create=yes
+    - name: remove beep in inputrc
+      become: yes
+      lineinfile:
+        path: /etc/inputrc
+        regexp: '^#?\s*{{ item.key }}\s'
+        line: "{{ item.key }} {{ item.value }}"        
+      with_items:
+      - key: "set bell-style"
+        value: "none"
     - name: "Install py3status bar for i3"
       become: yes
       pacman: state=present name="py3status"
